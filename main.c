@@ -14,16 +14,21 @@ int	main(int argc, char **argv, char**env)
 	while (1)
 	{
 		line = readline("minishell>>");
-		if (line == NULL || strlen(line) == 0)
+		if ( line == NULL|| !strcmp(line, "exit"))
 		{
 			free(line);
 			break ;
 		}
-		// if (!strcmp(line,"cd"))
-			// cd();
-		printf("%s\n",line);
-		add_history(line);
-		free(line);
+		else if (strlen(line) == 0)
+			;
+		else
+		{
+			// if (!strcmp(line,"cd"))
+			// 	cd();
+			printf("%s\n",line);
+			add_history(line);
+			free(line);
+		}
 	}
 	printf("%s\n",env[0]);
 	printf("おわり\n");
