@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "minimini.h": "c",
+        "readline.h": "c"
+    }
+}

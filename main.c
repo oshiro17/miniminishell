@@ -1,11 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <unistd.h>
+#include "minimini.h"
 
-char	**ft_split(char *c);
 
 
 int	main(int argc, char **argv, char**env)
@@ -36,13 +30,14 @@ int	main(int argc, char **argv, char**env)
 			;
 		else
 		{
-			if (!strcmp(line[0], "cd"))
+			if (!strcmp(line[0], "pwd"))
 			{
-				;
+				pwd();
 			}
 			if (!strcmp(line[0], "echo"))
 			{
-				echo(line);
+				// echo(line);
+				;
 			}
 				// printf("%s\n", line[0]);
 			free (line);
