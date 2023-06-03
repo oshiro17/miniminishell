@@ -7,3 +7,4 @@
 int	main(int argc, char **argv, char**env);
 char	**ft_split(char *c);
 int	pwd(void);
+int	echo(char **line);

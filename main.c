@@ -36,10 +36,10 @@ int	main(int argc, char **argv, char**env)
 			}
 			if (!strcmp(line[0], "echo"))
 			{
-				// echo(line);
-				;
+				echo(line);
 			}
-				// printf("%s\n", line[0]);
+			 
+				printf("%s\n", line[0]);
 			free (line);
 		}
 	}
