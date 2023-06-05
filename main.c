@@ -31,15 +31,14 @@ int	main(int argc, char **argv, char**env)
 		else
 		{
 			if (!strcmp(line[0], "pwd"))
-			{
 				pwd();
-			}
 			if (!strcmp(line[0], "echo"))
-			{
 				echo(line);
-			}
-			 
-				printf("%s\n", line[0]);
+			if (!strcmp(line[0],"cd"))
+				cd(line);
+
+			if (!strcmp(line[0], ""))
+			// printf("%s\n", line[0]);
 			free (line);
 		}
 	}
