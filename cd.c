@@ -11,6 +11,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!s1 | !s2)
 		return (NULL);
 	rec = malloc(strlen(s1) + strlen(s2));
+	if (!rec)
+		return (NULL);
 	i = 0;
 	k = 0;
 	while (s1[i])
@@ -32,16 +34,18 @@ char	*ft_strjoin(char *s1, char *s2)
 int	cd(char	**line)
 {
 	char	*dir;
-	char	*olddir;
+	// char	*olddir;
 	char	*oldpwd;
+	// char	*newpwd;
 
 	if (!line)
 		return (0);
 	else if (!line[1])
 	{
-		dir = "User/panti";
-		oldpwd = ft_strjoin("OLDPWD=", getcwd(NULL, 0));
-		// printf("%s\n",oldpwd);
+		dir = "/Users/panti";
+		// oldpwd = ft_strjoin("OLDPWD=", getcwd(NULL, 0));
+		printf("%d\n",chdir(dir));
+		// ft_strjoin("PWD=",dir);
 	}
-	return 0;
+	return (0);
 }
