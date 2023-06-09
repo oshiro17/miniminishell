@@ -15,11 +15,11 @@ char	*get_enviroment(char *env)
 	char	*rec;
 
 	i = 0;
-	while (env[i] != '=')
+	while (env[i]&&env[i] != '=')
 		i++;
 	rec = (char *)malloc(i + 1);
 	i = 0;
-	while (env[i] != '-')
+	while (env[i]&&env[i] != '=')
 	{
 		rec[i] = env[i];
 		i++;
@@ -36,13 +36,13 @@ char	*get_en_value(char *env)
 
 	i = 0;
 	k = 0;
-	while (env[i] != '=')
+	while (env[i] && env[i] != '=')
 		i++;
-	i++;
 	while (env[i + k])
 		k++;
 	rec = (char *)malloc(k + 1);
 	k = 0;
+	i++;
 	while (env[i])
 	{
 		rec[k] = env[i];
@@ -50,24 +50,37 @@ char	*get_en_value(char *env)
 		k++;
 	}
 	rec[k] = '\0';
-	return (rec);
+	printf("%s\n",rec);
+	return(rec);
 }
 
-t_env	*ft_lstnew(char *env)
+// t_env	*ft_lstnew(char *env)
+// {
+// 	char	*enviroment;
+// 	char	*en_value;
+// 	t_env	*new_list;
+
+// 	enviroment = get_enviroment(env);
+// 	en_value = get_en_value(env);
+// 	new_list = (t_env *)malloc(sizeof(t_env));
+// 	new_list->enviroment = enviroment;
+// 	new_list->en_value = en_value;
+// 	new_list->next = NULL;
+// 	return (new_list);
+// }
+
+t_env	*ft_lstnew(char *en_value, char *enviroment)
 {
-	char	*enviroment;
-	char	*en_value;
 	t_env	*new_list;
 
-	enviroment = get_enviroment(env);
-	en_value = get_en_value(env);
 	new_list = (t_env *)malloc(sizeof(t_env));
 	new_list->enviroment = enviroment;
 	new_list->en_value = en_value;
 	new_list->next = NULL;
+	// printf("値：%s\n",new_list->en_value);
+	// printf("環境変数：%s\n",new_list->enviroment);
 	return (new_list);
 }
-
 t_env	*ft_lstlast(t_env *env_list)
 {
 	while (env_list && env_list->next)
@@ -101,14 +114,13 @@ void	make_env_list(t_env **env_list, char **env)
 	int		i;
 
 	i = 0;
-	while (env[i] && i<10)
+	while (env[i])
 	{
-		new_list = ft_lstnew(env[i]);
-		printf("b\n");
+		new_list = ft_lstnew(get_en_value(env[i]),get_enviroment(env[i]));
 		i++;
 		ft_lstadd_back(env_list, new_list);
 	}
-	printf("c\n");
+	// printf("LINE == %d, FILE == %s\n", __LINE__, __FILE__);
 }
 
 int	main(int argc, char **argv, char	**env)
