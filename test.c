@@ -14,7 +14,9 @@ int main(int argc,char **argv, char **env)
     (void)argc;
     (void)argv;
 
-    put_env(env);
+    pjkut_env(env);
+    printf("%d, %s\n",__LINE__, __FILE__);
+    printf("%d, %s\n",__LINE__, __FILE__);
     printf("LINE == %d, FILE == %s\n", __LINE__, __FILE__);
     return (0);
 }
