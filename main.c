@@ -1,13 +1,13 @@
 #include "minimini.h"
 
-typedef struct s_env t_env;
+// typedef struct s_env t_env;
 
-typedef struct s_env
-{
-	char	*enviroment;
-	char	*en_value;
-	t_env	*next;
-}	t_env;
+// typedef struct s_env
+// {
+// 	char	*enviroment;
+// 	char	*en_value;
+// 	t_env	*next;
+// }	t_env;
 
 char	*get_enviroment(char *env)
 {
@@ -77,8 +77,6 @@ t_env	*ft_lstnew(char *en_value, char *enviroment)
 	new_list->enviroment = enviroment;
 	new_list->en_value = en_value;
 	new_list->next = NULL;
-	// printf("値：%s\n",new_list->en_value);
-	// printf("環境変数：%s\n",new_list->enviroment);
 	return (new_list);
 }
 t_env	*ft_lstlast(t_env *env_list)
@@ -96,9 +94,7 @@ void	ft_lstadd_back(t_env **env_list, t_env *new)
 		return ;
 	if (*env_list)
 	{
-		// printf("LINE == %d, FILE == %s\n", __LINE__, __FILE__);
 		last = ft_lstlast(*env_list);
-		// printf("LINE == %d, FILE == %s\n", __LINE__, __FILE__);
 		last->next = new;
 	}
 	else
@@ -120,7 +116,21 @@ void	make_env_list(t_env **env_list, char **env)
 		i++;
 		ft_lstadd_back(env_list, new_list);
 	}
-	// printf("LINE == %d, FILE == %s\n", __LINE__, __FILE__);
+}
+
+int env_env(t_env **env_list)
+{
+	t_env *list;
+
+	list = *env_list;
+	while (list)
+	{
+		printf("%s",list->enviroment);
+		printf("=");
+		printf("%s\n",list->en_value);
+		list = list->next;
+	}
+	return(0);
 }
 
 int	main(int argc, char **argv, char	**env)
@@ -134,12 +144,6 @@ int	main(int argc, char **argv, char	**env)
 	(void)argv;
 	line = NULL;
 	make_env_list(&env_list, env);
-	while (env_list->next)
-	{
-		printf("%s\n",env_list->en_value);
-		printf("%s\n",env_list->enviroment);
-		env_list = env_list->next;
-	}
 	while (1)
 	{
 		line = ft_split(readline("minishell>>"));
@@ -154,12 +158,14 @@ int	main(int argc, char **argv, char	**env)
 			;
 		else
 		{
+			if (!strcmp(line[0], "env"))
+				env_env(&env_list);
 			if (!strcmp(line[0], "pwd"))
 				pwd();
 			if (!strcmp(line[0], "echo"))
 				echo(line);
 			if (!strcmp(line[0],"cd"))
-				cd(line);
+				cd(line, &env_list);
 
 			if (!strcmp(line[0], ""))
 			// printf("%s\n", line[0]);

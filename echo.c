@@ -5,6 +5,8 @@ int	echo(char **line)
     int     i;
     bool    new_line;
 
+    if (!line[1])
+        return(0);
     new_line = false;
     i = 1;
     if (!strcmp(line[i],"-n"))
@@ -12,6 +14,8 @@ int	echo(char **line)
         i++;
         new_line = true;
     }
+    while (new_line && !strcmp(line[i],"-n"))
+        i++;
 	while (line[i])
 	{
 		printf("%s", line[i]);
@@ -19,7 +23,7 @@ int	echo(char **line)
 			printf(" ");
         i++;
 	}
-    if (new_line)
+    if (!new_line)
         printf("\n");
 	return (0);
 }
