@@ -18,7 +18,7 @@ typedef struct s_env
 
 int		main(int argc, char **argv, char**env);
 char	**ft_split(char const *s, char c);
-int		pwd(void);
+int		pwd(char **line);
 int		cd(char	**line, t_env **env_list);
 int		echo(char **line);
 int		env_env(t_env	**env_list);

@@ -1,12 +1,4 @@
 #include "minimini.h"
-
-// typedef struct s_env t_env;
-
-// typedef struct s_env
-// {
-// 	char	*enviroment;
-// 	char	*en_value;
-// 	t_env	*next;
 // }	t_env;
 
 char	*get_enviroment(char *env)
@@ -90,13 +82,11 @@ void	ft_lstadd_back(t_env **env_list, t_env *new)
 		last->next = new;
 	}
 	else
-	{
 		*env_list = new;
-	}
 	return ;
 }
 
-void	make_env_list(t_env **env_list, char **env)
+void	make_env_list(t_env	**env_list,	char	**env)
 {
 	t_env	*new_list;
 	int		i;
@@ -111,9 +101,8 @@ void	make_env_list(t_env **env_list, char **env)
 }
 
 
-int	main(int argc, char **argv, char	**env)
+int	main(int argc, char **argv, char **env)
 {
-	// char	*line_tmp;
 	char	**line;
 	t_env	*env_list;
 
@@ -124,7 +113,7 @@ int	main(int argc, char **argv, char	**env)
 	make_env_list(&env_list, env);
 	while (1)
 	{
-		line = ft_split(readline("minishell>>"),' ');
+		line = ft_split(readline("minishell>>"), ' ');
 		if (*line == NULL)
 			;
 		else if ( line == NULL || !strcmp(line[0], "exit"))
@@ -136,46 +125,27 @@ int	main(int argc, char **argv, char	**env)
 			;
 		else
 		{
-			if (!strcmp(line[0], "env"))
-				env_env(&env_list);
-			if (!strcmp(line[0], "pwd"))
-				pwd();
+			if (!line[1])
+			{
+				if (!strcmp(line[0], "env"))
+					env_env(&env_list);
+				if (!strcmp(line[0], "pwd"))
+					pwd(line);
+			}
 			if (!strcmp(line[0], "echo"))
 				echo(line);
-			if (!strcmp(line[0],"cd"))
-				cd(line, &env_list);
-			if (!strcmp(line[0], "unset"))
-				unset_unset(&env_list, line);
-			if (!strcmp(line[0], "export"))
-				export_export(&env_list, line);
+			if (!line[2])
+			{
+				if (!strcmp(line[0],"cd"))
+					cd(line, &env_list);
+				if (!strcmp(line[0], "unset"))
+					unset_unset(&env_list, line);
+				if (!strcmp(line[0], "export"))
+					export_export(&env_list, line);
+			}
 			free (line);
 		}
 	}
 	printf("exit");
 	return (0);
 }
-// #include<stdio.h>
-// #include<string.h>
-// #include<unistd.h>
-
-// #define PATHNAME_SIZE 512
-
-// int main(void)
-// {
-//     // 変数定義
-//     char pathname[PATHNAME_SIZE];  // ファイルパス
-
-//     // 変数初期化
-//     memset(pathname, '\0', PATHNAME_SIZE); 
-
-//     // カレントディレクトリ取得
-//     getcwd(pathname, PATHNAME_SIZE);
-//     fprintf(stdout,"現在のファイルパス:%s\n", pathname);
-
-//     // カレントディレクトリ変更  
-//     chdir("/Users/panti/"); // チェンジディレクトリ
-//     getcwd(pathname, PATHNAME_SIZE);
-//     fprintf(stdout,"現在のファイルパス:%s\n", pathname);
-
-//     return 0;
-// }

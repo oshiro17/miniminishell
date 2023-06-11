@@ -1,10 +1,10 @@
 #include "minimini.h"
 
-void	free_list(t_env *env)
+void	free_list(t_env *node)
 {
-	free(env->en_value);
-	free(env->enviroment);
-	free(env);
+	free(node->en_value);
+	free(node->enviroment);
+	free(node);
 }
 
 int	unset_unset(t_env **env_list, char **line)

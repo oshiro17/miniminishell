@@ -52,17 +52,21 @@ void	add_env_value(char *env, t_env **env_list, char *oldpwd)
 	t_env	*list;
 
 	list = *env_list;
-	while (list)
+	if (env[0] && oldpwd[0])
 	{
-		if (!strncmp(env,list->enviroment,strlen(env) + 1))
+		while (list)
 		{
-			list->en_value = oldpwd;
-			return ;
+			if (!strncmp(env,list->enviroment,strlen(env) + 1))
+			{
+				list->en_value = oldpwd;
+				return ;
+			}
+			list = list->next;
 		}
-		list = list->next;
+		list = ft_lstnew(oldpwd, env);
+		ft_lstadd_back(env_list, list);
 	}
-	list = ft_lstnew(oldpwd, env);
-	ft_lstadd_back(env_list, list);
+	return ;
 }
 
 int	cd(char	**line, t_env **env_list)
