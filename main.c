@@ -144,8 +144,10 @@ int	main(int argc, char **argv, char	**env)
 				echo(line);
 			if (!strcmp(line[0],"cd"))
 				cd(line, &env_list);
+			if (!strcmp(line[0], "unset"))
+				unset_unset(&env_list, line);
 			if (!strcmp(line[0], "export"))
-				export_export(&env_list,line);
+				export_export(&env_list, line);
 			free (line);
 		}
 	}
