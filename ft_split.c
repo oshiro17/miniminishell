@@ -1,70 +1,100 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
+#include "minimini.h"
 
-void	ft_strncpy(char *s1, char *s2, int n)
+char	*ft_substr(char const	*s, unsigned int start, size_t len)
 {
-	int i = 0;
-	int j = 0;
+	size_t	i;
+	size_t	j;
+	char	*sub;
 
-	while (s2 && i < n)
+	i = 0;
+	j = 0;
+	if (!s)
+		return (NULL);
+	if (strlen(s) < len)
+		sub = (char *)malloc((strlen(s) + 1));
+	else
+		sub = (char *)malloc((len + 1));
+	if (!sub)
+		return (NULL);
+	while (s[i])
 	{
-		s1[i] = s2[i];
+		if (i >= start && j < len)
+		{
+			sub[j] = s[i];
+			j++;
+		}
 		i++;
 	}
-	s1[i] = '\0';
+	sub[j] = '\0';
+	return (sub);
 }
 
-char	**ft_split(char	*c)
+static char	**free_all_element(char **s, size_t idx)
 {
-	int i = 0;
-	int k = 0;
-	int j = 0;
-	char **rec;
-	int wc = 0;
-
-	while (c[i])
+	while (0 <= idx)
 	{
-		while (c[i] && (c[i] == '\t' || c[i] == '\n' || c[i] ==' '))
-			i++;
-		if (c[i] && c[i] != '\t' && c[i] != '\n' && c[i] != ' ')
-			wc++;
-		while (c[i] && c[i] != '\t' && c[i] != '\n' && c[i] != ' ')	
-			i++;
+		free(s[idx]);
+		s[idx--] = NULL;
 	}
-	rec = (char **)malloc(sizeof(char *) * (wc + 1));
-	rec[wc] = NULL;
-	i = 0;
-	while(c[i])
-	{
-		while(c[i] && (c[i] == '\t' || c[i] == '\n' || c[i] ==' '))
-			i++;
-		j = i;
-		while(c[i] && c[i] != '\t' && c[i] != '\n' && c[i] != ' ')	
-			i++;
-		if (i > j)
-		{
-			rec[k] = (char *)malloc((i - j) + 1);
-			ft_strncpy(rec[k],&c[j], i- j);
-			k++;
-		}
-	}
-	return(rec);
+	free(s);
+	return (NULL);
 }
 
-// int	main(void)
-// {
-// 	char c[40] = "asd dljfl sdlkjlkds sdlfjl";
-// 	char **k;
+static size_t	element_cnt(char const *s, char c)
+{
+	size_t	cnt;
 
-// 	k = ft_split(c);
+	cnt = 0;
+	while (*s)
+	{
+		if (*s != c)
+		{
+			cnt++;
+			while (*s && *s != c)
+				s++;
+		}
+		while (*s && *s == c)
+			s++;
+	}
+	return (cnt);
+}
 
-// 	int i = 0;
+static char	**element_cpy(char const *s, char **split, char c, size_t element)
+{
+	size_t	idx;
+	size_t	len;
 
-// 	while(k[i])
-// 	{
-// 		printf("%s\n",k[i]);
-// 		i++;
-// 	}
-// 	return (0);
-// }
+	idx = 0;
+	while (*s && idx < element)
+	{
+		len = 0;
+		while (*s && *s == c)
+			s++;
+		while (*(s + len) && *(s + len) != c)
+			len++;
+		if (len)
+		{
+			split[idx] = ft_substr(s, 0, len);
+			if (!(split[idx]))
+				return (free_all_element(split, idx));
+			idx++;
+		}
+		s += len;
+	}
+	split[idx] = NULL;
+	return (split);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	size_t	element;
+	char	**split;
+
+	if (!s)
+		return (NULL);
+	element = element_cnt(s, c);
+	split = (char **)malloc((element + 1) * sizeof(char *));
+	if (!split)
+		return (NULL);
+	return (element_cpy(s, split, c, element));
+}

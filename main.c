@@ -28,46 +28,38 @@ char	*get_enviroment(char *env)
 	return (rec);
 }
 
-char	*get_en_value(char *env)
+char	*get_en_value(char	*env)
 {
 	int		i;
 	int		k;
+	int		mark;
 	char	*rec;
 
+	mark = 0;
 	i = 0;
 	k = 0;
 	while (env[i] && env[i] != '=')
 		i++;
 	while (env[i + k])
+	{
+		if (env[i + k] == '"')
+			mark++;
 		k++;
-	rec = (char *)malloc(k + 1);
+	}
+	rec = (char *)malloc(k + 1 - mark);
 	k = 0;
 	i++;
-	while (env[i])
+	if (mark == 2)
+		i++;
+	while (env[i] && env[i]!= '"')
 	{
 		rec[k] = env[i];
 		i++;
 		k++;
 	}
 	rec[k] = '\0';
-	printf("%s\n",rec);
-	return(rec);
+	return (rec);
 }
-
-// t_env	*ft_lstnew(char *env)
-// {
-// 	char	*enviroment;
-// 	char	*en_value;
-// 	t_env	*new_list;
-
-// 	enviroment = get_enviroment(env);
-// 	en_value = get_en_value(env);
-// 	new_list = (t_env *)malloc(sizeof(t_env));
-// 	new_list->enviroment = enviroment;
-// 	new_list->en_value = en_value;
-// 	new_list->next = NULL;
-// 	return (new_list);
-// }
 
 t_env	*ft_lstnew(char *en_value, char *enviroment)
 {
@@ -118,20 +110,6 @@ void	make_env_list(t_env **env_list, char **env)
 	}
 }
 
-int env_env(t_env **env_list)
-{
-	t_env *list;
-
-	list = *env_list;
-	while (list)
-	{
-		printf("%s",list->enviroment);
-		printf("=");
-		printf("%s\n",list->en_value);
-		list = list->next;
-	}
-	return(0);
-}
 
 int	main(int argc, char **argv, char	**env)
 {
@@ -146,7 +124,7 @@ int	main(int argc, char **argv, char	**env)
 	make_env_list(&env_list, env);
 	while (1)
 	{
-		line = ft_split(readline("minishell>>"));
+		line = ft_split(readline("minishell>>"),' ');
 		if (*line == NULL)
 			;
 		else if ( line == NULL || !strcmp(line[0], "exit"))
@@ -166,9 +144,8 @@ int	main(int argc, char **argv, char	**env)
 				echo(line);
 			if (!strcmp(line[0],"cd"))
 				cd(line, &env_list);
-
-			if (!strcmp(line[0], ""))
-			// printf("%s\n", line[0]);
+			if (!strcmp(line[0], "export"))
+				export_export(&env_list,line);
 			free (line);
 		}
 	}

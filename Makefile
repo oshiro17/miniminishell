@@ -1,4 +1,4 @@
-SRCS			=	main.c ft_split.c pwd.c echo.c cd.c
+SRCS			=	main.c ft_split.c pwd.c echo.c cd.c env.c export.c unset.c
 
 OBJS			= $(SRCS:.c=.o)
 

@@ -43,21 +43,26 @@ char	*catch_env_value(char *env, t_env	**env_list)
 			return (list->en_value);
 		list = list->next;
 	}
-	printf("%s",env);
+	// printf("%s",env);
 	return(NULL);
 }
 
 void	add_env_value(char *env, t_env **env_list, char *oldpwd)
 {
-	t_env *list;
+	t_env	*list;
 
 	list = *env_list;
 	while (list)
 	{
 		if (!strncmp(env,list->enviroment,strlen(env) + 1))
+		{
 			list->en_value = oldpwd;
+			return ;
+		}
 		list = list->next;
 	}
+	list = ft_lstnew(oldpwd, env);
+	ft_lstadd_back(env_list, list);
 }
 
 int	cd(char	**line, t_env **env_list)
@@ -72,8 +77,9 @@ int	cd(char	**line, t_env **env_list)
 		oldpwd = getcwd(NULL, 0);
 		dir = catch_env_value("HOME", env_list);
 		chdir(dir);
-		add_env_value("PWD",env_list,dir);
+		add_env_value("PWD", env_list, dir);
 		add_env_value("OLDPWD", env_list, oldpwd);
 	}
+	chdir(line[1]);
 	return (0);
 }
