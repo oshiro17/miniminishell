@@ -21,13 +21,16 @@ int	unset_unset(t_env **env_list, char **line)
 		{
 			if (!strncmp(line[1], list->enviroment, strlen(list->enviroment)))
 			{
-				old_list->next = list->next;
+				if (!list->next)
+					old_list->next = NULL;
+				else
+					old_list->next = list->next;
 				free_list(list);
 				return (0);
 			}
 			old_list = list;
 			list = list->next;
 		}
-	}e
+	}
 	return (0);
 }
