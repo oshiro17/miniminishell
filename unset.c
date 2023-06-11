@@ -4,32 +4,31 @@ void	free_list(t_env *env)
 {
 	free(env->en_value);
 	free(env->enviroment);
-	free(env->next);
 	free(env);
 }
 
 int	unset_unset(t_env **env_list, char **line)
 {
-	t_env	*list;
-	t_env	*old_list;
+	t_env	*cur_node;
+	t_env	*prev_node;
 
 	if (line[1])
 	{
-		list = *env_list;
-		old_list = *env_list;
-		while (list)
+		cur_node = *env_list;
+		prev_node = NULL;
+		while (cur_node)
 		{
-			if (!strncmp(line[1], list->enviroment, strlen(list->enviroment)))
+			if (!strncmp(line[1], cur_node->enviroment, strlen(cur_node->enviroment)))
 			{
-				if (!list->next)
-					old_list->next = NULL;
+				if (!prev_node)
+					*env_list = cur_node->next;
 				else
-					old_list->next = list->next;
-				free_list(list);
+					prev_node->next = cur_node->next;
+				free_list(cur_node);
 				return (0);
 			}
-			old_list = list;
-			list = list->next;
+			prev_node = cur_node;
+			cur_node = cur_node->next;
 		}
 	}
 	return (0);
